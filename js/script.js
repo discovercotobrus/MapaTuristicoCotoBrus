@@ -70,6 +70,146 @@ document.getElementById("zoomToPittier").addEventListener("click", function(e){
 
 var allMarkers = [];
 
+// Estado del botón para alternar marcadores
+var markersVisible = false;
+
+// Función para obtener todos los lugares de todas las categorías
+function getAllPlaces() {
+  var places = [];
+  
+  // Turismo
+  var turismoPlaces = document.querySelectorAll("#tourist-places li[data-lat][data-lng]");
+  turismoPlaces.forEach(function(item) {
+    places.push({
+      element: item,
+      icon: turismoIcon,
+      category: "Turismo"
+    });
+  });
+  
+  // Restaurantes
+  var restaurantePlaces = document.querySelectorAll("#restaurant-places li[data-lat][data-lng]");
+  restaurantePlaces.forEach(function(item) {
+    places.push({
+      element: item,
+      icon: restauranteIcon,
+      category: "Restaurante"
+    });
+  });
+  
+  // Hospedaje
+  var hospedajePlaces = document.querySelectorAll("#lodging-places li[data-lat][data-lng]");
+  hospedajePlaces.forEach(function(item) {
+    places.push({
+      element: item,
+      icon: hospedajeIcon,
+      category: "Hospedaje"
+    });
+  });
+  
+  // Transporte
+  var transportePlaces = document.querySelectorAll("#transport-places li[data-lat][data-lng]");
+  transportePlaces.forEach(function(item) {
+    places.push({
+      element: item,
+      icon: transporteIcon,
+      category: "Transporte"
+    });
+  });
+  
+  // Tours
+  var tourPlaces = document.querySelectorAll("#tour-places li[data-lat][data-lng]");
+  tourPlaces.forEach(function(item) {
+    places.push({
+      element: item,
+      icon: tourIcon,
+      category: "Tour"
+    });
+  });
+  
+  return places;
+}
+
+// Función para crear el contenido del popup
+function createPopupContent(item, categoryIcon) {
+  var name = item.textContent.trim();
+  var slogan = item.getAttribute("data-slogan") || "";
+  var images = getImages(item);
+  var carouselId = "carousel-all-" + Math.random().toString(36).substr(2, 9);
+  var imagesHtml = createImageCarousel(images, name, carouselId);
+  
+  return categoryIcon + "<b>" + name + "</b><br><em>" + slogan + "</em>" +
+    (item.getAttribute("data-phone") ? "<br>📞 " + item.getAttribute("data-phone") : "") +
+    (item.getAttribute("data-address") ? "<br>📍 " + item.getAttribute("data-address") : "") + 
+    (item.getAttribute("data-mail") ? "<br>✉️ " + item.getAttribute("data-mail") : "") +
+    (item.getAttribute("data-instagram") ? "<br>📷 " + item.getAttribute("data-instagram") : "") +
+    imagesHtml +
+    (item.getAttribute("data-description") ? "<br><br>" + item.getAttribute("data-description") : "");
+}
+
+// Función para mostrar todos los marcadores
+function showAllMarkers() {
+  var places = getAllPlaces();
+  
+  places.forEach(function(place) {
+    var lat = parseFloat(place.element.getAttribute("data-lat"));
+    var lng = parseFloat(place.element.getAttribute("data-lng"));
+    var categoryIcon = '';
+    
+    switch(place.category) {
+      case "Turismo":
+        categoryIcon = '<img src="img/map.png" alt="Turismo" style="width:24px;vertical-align:middle;margin-right:8px;">';
+        break;
+      case "Restaurante":
+        categoryIcon = '<img src="img/restaurant.png" alt="Restaurante" style="width:24px;vertical-align:middle;margin-right:8px;">';
+        break;
+      case "Hospedaje":
+        categoryIcon = '<img src="img/lodging-2.png" alt="Hospedaje" style="width:24px;vertical-align:middle;margin-right:8px;">';
+        break;
+      case "Transporte":
+        categoryIcon = '<img src="img/bus.png" alt="Transporte" style="width:24px;vertical-align:middle;margin-right:8px;">';
+        break;
+      case "Tour":
+        categoryIcon = '<img src="img/museo.png" alt="Tour" style="width:24px;vertical-align:middle;margin-right:8px;">';
+        break;
+    }
+    
+    var popupContent = createPopupContent(place.element, categoryIcon);
+    var marker = L.marker([lat, lng], {icon: place.icon}).addTo(map).bindPopup(popupContent);
+    allMarkers.push(marker);
+  });
+  
+  // Ajustar el zoom para que se vean todos los marcadores
+  if (allMarkers.length > 0) {
+    var group = new L.featureGroup(allMarkers);
+    map.fitBounds(group.getBounds().pad(0.1));
+  }
+  
+  markersVisible = true;
+  document.getElementById("toggleAllMarkers").innerHTML = "🗺️ Ocultar Marcadores";
+  document.getElementById("toggleAllMarkers").style.backgroundColor = "#f44336";
+}
+
+// Función para ocultar todos los marcadores
+function hideAllMarkers() {
+  allMarkers.forEach(function(marker) {
+    map.removeLayer(marker);
+  });
+  allMarkers = [];
+  markersVisible = false;
+  document.getElementById("toggleAllMarkers").innerHTML = "🗺️ Mostrar Todos los Marcadores";
+  document.getElementById("toggleAllMarkers").style.backgroundColor = "#4CAF50";
+}
+
+// Event listener para el botón de toggle
+document.getElementById("toggleAllMarkers").addEventListener("click", function(e) {
+  if (markersVisible) {
+    hideAllMarkers();
+  } else {
+    showAllMarkers();
+  }
+});
+
 // Iconos personalizados para los marcadores
 var turismoIcon = L.icon({
   iconUrl: "img/map.png",
