@@ -73,6 +73,60 @@ var allMarkers = [];
 // Estado del botón para alternar marcadores (empezamos con marcadores visibles)
 var markersVisible = true;
 
+// Clusters separados por categoría
+var turismoCluster = L.markerClusterGroup({
+  iconCreateFunction: function(cluster) {
+    return L.divIcon({ 
+      html: '<div style="background-color: #4CAF50; color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><b>' + cluster.getChildCount() + '</b></div>',
+      className: 'custom-cluster-icon turismo-cluster',
+      iconSize: L.point(40, 40)
+    });
+  }
+});
+
+var restauranteCluster = L.markerClusterGroup({
+  iconCreateFunction: function(cluster) {
+    return L.divIcon({ 
+      html: '<div style="background-color: #FF5722; color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><b>' + cluster.getChildCount() + '</b></div>',
+      className: 'custom-cluster-icon restaurante-cluster',
+      iconSize: L.point(40, 40)
+    });
+  }
+});
+
+var hospedajeCluster = L.markerClusterGroup({
+  iconCreateFunction: function(cluster) {
+    return L.divIcon({ 
+      html: '<div style="background-color: #2196F3; color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><b>' + cluster.getChildCount() + '</b></div>',
+      className: 'custom-cluster-icon hospedaje-cluster',
+      iconSize: L.point(40, 40)
+    });
+  }
+});
+
+var transporteCluster = L.markerClusterGroup({
+  iconCreateFunction: function(cluster) {
+    return L.divIcon({ 
+      html: '<div style="background-color: #FF9800; color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><b>' + cluster.getChildCount() + '</b></div>',
+      className: 'custom-cluster-icon transporte-cluster',
+      iconSize: L.point(40, 40)
+    });
+  }
+});
+
+var tourCluster = L.markerClusterGroup({
+  iconCreateFunction: function(cluster) {
+    return L.divIcon({ 
+      html: '<div style="background-color: #9C27B0; color: white; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border: 2px solid white; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"><b>' + cluster.getChildCount() + '</b></div>',
+      className: 'custom-cluster-icon tour-cluster',
+      iconSize: L.point(40, 40)
+    });
+  }
+});
+
+// Array para mantener referencia a todos los clusters
+var allClusters = [turismoCluster, restauranteCluster, hospedajeCluster, transporteCluster, tourCluster];
+
 // Función para obtener todos los lugares de todas las categorías
 function getAllPlaces() {
   var places = [];
@@ -147,10 +201,17 @@ function createPopupContent(item, categoryIcon) {
     (item.getAttribute("data-description") ? "<br><br>" + item.getAttribute("data-description") : "");
 }
 
-// Función para mostrar todos los marcadores
+// Función para mostrar todos los marcadores usando clusters
 function showAllMarkers() {
   var places = getAllPlaces();
   
+  // Limpiar clusters anteriores
+  allClusters.forEach(function(cluster) {
+    cluster.clearLayers();
+    map.removeLayer(cluster);
+  });
+  
+  // Organizar marcadores por categoría
   places.forEach(function(place) {
     var lat = parseFloat(place.element.getAttribute("data-lat"));
     var lng = parseFloat(place.element.getAttribute("data-lng"));
@@ -175,8 +236,35 @@ function showAllMarkers() {
     }
     
     var popupContent = createPopupContent(place.element, categoryIcon);
-    var marker = L.marker([lat, lng], {icon: place.icon}).addTo(map).bindPopup(popupContent);
+    var marker = L.marker([lat, lng], {icon: place.icon}).bindPopup(popupContent);
+    
+    // Agregar marcador al cluster correspondiente
+    switch(place.category) {
+      case "Turismo":
+        turismoCluster.addLayer(marker);
+        break;
+      case "Restaurante":
+        restauranteCluster.addLayer(marker);
+        break;
+      case "Hospedaje":
+        hospedajeCluster.addLayer(marker);
+        break;
+      case "Transporte":
+        transporteCluster.addLayer(marker);
+        break;
+      case "Tour":
+        tourCluster.addLayer(marker);
+        break;
+    }
+    
     allMarkers.push(marker);
+  });
+  
+  // Agregar todos los clusters al mapa
+  allClusters.forEach(function(cluster) {
+    if (cluster.getLayers().length > 0) {
+      map.addLayer(cluster);
+    }
   });
   
   // Ajustar el zoom para que se vean todos los marcadores
@@ -190,11 +278,14 @@ function showAllMarkers() {
   document.getElementById("toggleAllMarkers").style.backgroundColor = "#f44336";
 }
 
-// Función para ocultar todos los marcadores
+// Función para ocultar todos los marcadores y clusters
 function hideAllMarkers() {
-  allMarkers.forEach(function(marker) {
-    map.removeLayer(marker);
+  // Remover todos los clusters del mapa y limpiarlos
+  allClusters.forEach(function(cluster) {
+    map.removeLayer(cluster);
+    cluster.clearLayers();
   });
+  
   allMarkers = [];
   markersVisible = false;
   document.getElementById("toggleAllMarkers").innerHTML = "🗺️ Mostrar Todos los Marcadores";

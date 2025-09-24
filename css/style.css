@@ -279,3 +279,56 @@ body {
   box-shadow: 0 4px 16px rgba(25, 118, 210, 0.15);
   outline: none;
 }
+
+/* Estilos personalizados para clusters */
+.custom-cluster-icon {
+  background: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.custom-cluster-icon div {
+  font-family: 'Roboto', sans-serif;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 1;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+/* Animaciones para clusters */
+.turismo-cluster div,
+.restaurante-cluster div,
+.hospedaje-cluster div,
+.transporte-cluster div,
+.tour-cluster div {
+  transition: transform 0.2s ease-in-out;
+}
+
+.turismo-cluster:hover div,
+.restaurante-cluster:hover div,
+.hospedaje-cluster:hover div,
+.transporte-cluster:hover div,
+.tour-cluster:hover div {
+  transform: scale(1.1);
+}
+
+/* Colores específicos para clusters (respaldo en caso de que el CSS inline falle) */
+.turismo-cluster div {
+  background-color: #4CAF50 !important; /* Verde para turismo */
+}
+
+.restaurante-cluster div {
+  background-color:darkred !important; /* Rojo-naranja para restaurantes */
+}
+
+.hospedaje-cluster div {
+  background-color: darkblue !important; /* Azul para hospedaje */
+}
+
+.transporte-cluster div {
+  background-color: brown !important; /* Marrón para transporte */
+}
+
+.tour-cluster div {
+  background-color: #9C27B0 !important; /* Morado para tours */
+}
