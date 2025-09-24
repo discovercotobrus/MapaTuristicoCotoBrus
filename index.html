@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Turístico Coto Brus</title>
+    <link rel="stylesheet" href="lib/leaflet-1.9.4/leaflet.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-sidebar-v2/css/leaflet-sidebar.min.css" />
+    <link rel="stylesheet" href="css/fontawesome-free-6.7.2-web/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="sidebar" class="leaflet-sidebar collapsed">
+        <div class="leaflet-sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+                <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
+            </ul>
+            <ul role="tablist">
+                <li><a href="#settings" role="tab"><i class="fa fa-gear"></i></a></li>
+            </ul>
+        </div>
+        <div class="leaflet-sidebar-content">
+            <div class="leaflet-sidebar-pane" id="home">
+                <h1 class="leaflet-sidebar-header">
+                    Mapa Turistico Coto Brus
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <div class="sidebar-content">
+                    <p>Bienvenido al mapa turístico de Coto Brus. Aquí encontrarás información sobre los principales atractivos turísticos de la zona.</p>
+                    <button id="zoomToSanVito" class="btn">Centrar en San Vito</button>
+                </div>
+                <div class="sidebar-content">
+                    <button id="zoomTosabalito" class="btn">Centrar en Sabalito</button>
+                </div>
+                <div class="sidebar-content">
+                    <button id="zoomToLimoncito" class="btn">Centrar en Limoncito</button>
+                </div>
+                <div class="sidebar-content">
+                    <button id="zoomToGutierrezBraun" class="btn">Centrar en Gutierrez Braun</button>
+                </div>
+                <div class="sidebar-content">
+                    <button id="zoomToAguaBuena" class="btn">Centrar en Agua Buena</button>
+                </div>
+                <div class="sidebar-content">
+                    <button id="zoomToPittier" class="btn">Centrar en Pittier</button>
+                </div>
+                
+            </div>
+            <div class="leaflet-sidebar-pane" id="profile">
+                <h1 class="leaflet-sidebar-header">
+                    Lugares Turisticos
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <div class="sidebar-content">
+                    <!-- Lugares Turisticos -->
+                    <button class="accordion">Lugares Turisticos</button>
+                    <div class="panel" style="display:none;">
+                        <ul id="tourist-places">
+                            <!-- San Vito -->
+                            <li class="district-title collapsible">San Vito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li 
+                                    data-lat="8.819938" 
+                                    data-lng="-82.971134" 
+                                    data-slogan=""
+                                    data-phone=""
+                                    data-mail=""
+                                    data-instagram=""
+                                    data-address=""
+                                    data-img1="img/fts/parquesv1.jpg"
+                                    data-img2="img/fts/parquesv2.jpg"
+                                    data-description="Parque central de San Vito, un lugar ideal para relajarse y disfrutar de la naturaleza"
+                                >
+                                    <i class="fa fa-tree" style="color:green; margin-right:8px;"></i>Parque de San Vito
+                                </li>
+                            </ul>
+                            <!-- Sabalito -->
+                            <li class="district-title collapsible">Sabalito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li 
+                                    data-lat="8.819373" 
+                                    data-lng="-82.912556" 
+                                    data-slogan=""
+                                    data-phone=""
+                                    data-mail=""
+                                    data-instagram=""
+                                    data-address="Sabalito, Coto Brus"
+                                    data-img1="img/fts/parquesab1.jpg"
+                                    data-img2="img/fts/parquesab2.jpg"
+                                    data-description="Parque Central de Sabalito, un lugar ideal para relajarse y disfrutar de la naturaleza"
+                                >
+                                    <i class="fa fa-tree" style="color:green; margin-right:8px;"></i>Parque Sabalito
+                                </li>
+                            </ul>
+                            <!-- Limoncito -->
+                            <li class="district-title collapsible">Limoncito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li 
+                                    data-lat="8.829945" 
+                                    data-lng="-83.003806" 
+                                    data-slogan=""
+                                    data-phone=""
+                                    data-mail=""
+                                    data-instagram=""
+                                    data-address="Limoncito, Coto Brus"
+                                    data-img1="img/fts/parquelim1.jpg"
+                                    data-img2=""
+                                    data-description="Parque Limoncito, un lugar ideal para relajarse y disfrutar de la naturaleza"
+                                >
+                                    <i class="fa fa-tree" style="color:green; margin-right:8px;"></i>Parque Limoncito
+                                </li>
+                            </ul>
+                            <!-- Agua Buena -->
+                            <li class="district-title collapsible">Agua Buena</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                    data-lat="8.746536" 
+                                    data-lng="-82.942217" 
+                                    data-slogan=""
+                                    data-phone=""
+                                    data-mail=""
+                                    data-instagram=""
+                                    data-address=""
+                                    data-img1="img/fts/parqueab1.jpg"
+                                    data-img2=""
+                                    data-description="Parque central de Agua Buena, un lugar ideal para relajarse y disfrutar de la naturaleza"
+                                >
+                                    <i class="fa fa-tree" style="color:green; margin-right:8px;"></i>Parque Agua Buena
+                                </li>
+                            </ul>
+                            <!-- Pittier -->
+                            <li class="district-title collapsible">Pittier</li>
+                            <ul class="district-list" style="display:none;">
+                                <li 
+                                    data-lat="9.015810" 
+                                    data-lng="-82.965185" 
+                                    data-slogan=""
+                                    data-phone=""
+                                    data-mail=""
+                                    data-instagram=""
+                                    data-address=""
+                                    data-img1="img/fts/pittier2.jpg"
+                                    data-img2="img/fts/pittier1.jpg"
+                                    data-description="Cerro pittier es un lugar ideal para relajarse y disfrutar de la naturaleza"
+                                >
+                                    <i class="fa fa-tree" style="color:green; margin-right:8px;"></i>Santa Maria de Pittier
+                                </li>
+                            </ul>
+                            <!-- Gutierrez Braun -->
+                            <li class="district-title collapsible">Gutierrez Braun</li>
+                            <ul class="district-list" style="display:none;">
+                                <li 
+                                    data-lat="8.896753" 
+                                    data-lng="-82.921626" 
+                                    data-slogan=""
+                                    data-phone=""
+                                    data-mail=""
+                                    data-instagram=""
+                                    data-address=""
+                                    data-img1="img/fts/braun1.jpg"
+                                    data-img2=""
+                                    data-description="Campo ferial Gutierrez Braun, un lugar ideal para relajarse y disfrutar de la naturaleza"
+                                >
+                                    <i class="fa fa-tree" style="color:green; margin-right:8px;"></i>Campo ferial Gutierrez Braun
+                                </li>
+                            </ul>
+                        </ul>
+                        <p class="slogan">¡Descubre la belleza natural y cultural de Coto Brus!</p>
+                    </div>
+                </div>
+                <div class="sidebar-content">
+                    <!-- Restaurantes -->
+                    <button class="accordion">Restaurantes</button>
+                    <div class="panel" style="display:none;">
+                        <ul id="restaurant-places">
+                            <!-- San Vito -->
+                            <li class="district-title collapsible">San Vito</li>
+                            <ul class="district-list" style="display:none;">
+                               <li
+                                 data-lat="8.781803" 
+                                 data-lng="-82.957254" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8400-3344"
+                                 data-mail=""
+                                 data-instagram="botanik_glamping"
+                                 data-address="650 m sur del Jardin Botánico Wilson, San Vito, Coto Brus"
+                                 data-img1="img/fts/botanik1.jpg"
+                                 data-img2="img/fts/botanik2.jpg"
+                                 data-img3="img/fts/botanik3.jpg"
+                                 data-description="Botanik Glamping tiene como objetivo posicionarse como la principal experiencia gastronómica y de alojamiento de la región"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Botanik Glamping
+                                </li>
+                                <li
+                                 data-lat="8.801423" 
+                                 data-lng="-82.968633" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8633-9009"
+                                 data-mail="cantodelbosquecotobrus@gmail.com"
+                                 data-instagram="cantodelbosquecabanas"
+                                 data-address="2 km sur oeste del Hospital Juana Pirola, San Vito, Coto Brus"
+                                 data-img1="img/fts/canto1.jpg"
+                                 data-img2="img/fts/canto2.jpg"
+                                 data-img3="img/fts/canto3.jpg"
+                                 data-description="Hospedaje en las montañas de San Vito, Coto Brus, vive la belleza de la zona sur con nosotros. Paz, naturaleza y aventura"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Canto del Bosque
+                                </li>
+                                <li
+                                 data-lat="8.789239" 
+                                 data-lng="-82.954771" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2773-3208 / 8819-8155"
+                                 data-mail="info@cascatadelbosco.com"
+                                 data-instagram="cascata_del_bosco_sv"
+                                 data-address="200 m norte del Jardin Botanico Wilson, Las Cruces, Linda Vista, San Vito, Coto Brus"
+                                 data-img1="img/fts/cascata1.jpg"
+                                 data-img2="img/fts/cascata2.jpg"
+                                 data-img3="img/fts/cascata3.jpg"
+                                 data-description="Cascata del Bosco tiene una ubicacion ideal a poca distancia del mundialmente famoso Jardin Botanico Wilson y a 10 minutos del centro de San Vito"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Cascata del Bosco
+                                </li>
+                                <li
+                                 data-lat="8.826893" 
+                                 data-lng="-82.944248" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8328-1717"
+                                 data-mail=""
+                                 data-instagram="coffeerain_burger"
+                                 data-address="500 m oeste de la escuela Lourdes, San Vito, Coto Brus"
+                                 data-img1="img/fts/cofferain1.jpg"
+                                 data-img2="img/fts/cofferain2.jpg"
+                                 data-description="¡Somos restaurante y cafeteria! Un lugar acogedor, familiar y exclusivo. Tenemos un menú variado con ingrdientes frescos y nos esmeramos para que tengas la mejor experiencia en todos los sentidos"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Coffee Rain
+                                </li>
+                                <li
+                                 data-lat="8.818029" 
+                                 data-lng="-82.973515" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2102-6868 / 8619-8668"
+                                 data-mail=""
+                                 data-instagram="tncoffee.cr"
+                                 data-address="150 m Oeste de la Bomba Rio Java, a un costado de restaurante Nuevo Mundo, San Vito, Coto Brus"
+                                 data-img1="img/fts/tcoffee1.jpg"
+                                 data-img2="img/fts/tcoffee2.jpg"
+                                 data-description="En T & Coffee, nos apasiona ofrecerte una experiencia culinaria excepcional, combinando sabores auténticos con un ambiente acogedor y un servicio impecable"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>T & Coffee
+                                </li>
+                                <li
+                                 data-lat="8.784894" 
+                                 data-lng="-82.987647" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8636-2474 / 8975-3153"
+                                 data-mail=""
+                                 data-instagram="los_jilgueros_official"
+                                 data-address="200 m Suroeste de la escuela Torre Alta, San Vito, Coto Brus"
+                                 data-img1="img/fts/jilgueros1.jpg"
+                                 data-img2="img/fts/jilgueros2.jpg"
+                                 data-description="Sal de la rutina, visitanos y disfruta de avistamiento de aves, granja, senderos, cabañas y deliciosos platillos"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Paradero Turistico los Jilgueros
+                                </li>
+                                <li
+                                 data-lat="8.824271139064566" 
+                                 data-lng="-82.97065870742954" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2201-7535"
+                                 data-mail=""
+                                 data-instagram="lecrepes_sv"
+                                 data-address="70 m Norte de Correos de Costa Rica, Edificio Plaza 500, San Vito, Coto Brus"
+                                 data-img1="img/fts/crepes1.jpg"
+                                 data-img2="img/fts/crepes2.jpg"
+                                 data-description="Cafeteria y creperia. ¡Te brindamos la mejor la mejor experiencia a través de nuestros deliciosos sabores!"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Le Crêpe cafeteria y creperia
+                                </li>
+                                <li
+                                 data-lat="8.819992" 
+                                 data-lng="-82.973108" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2201-9691 / 8324-8785"
+                                 data-mail=""
+                                 data-instagram="sodaycafeteria_riojava"
+                                 data-address="Contiguo a la bomba Rio Java, San Vito, Coto Brus"
+                                 data-img1="img/fts/sriojava1.jpg"
+                                 data-img2="img/fts/sriojava2.jpg"
+                                 data-description="!"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Soda Rio Java
+                                </li>
+                                <li
+                                 data-lat="8.821348963233985" 
+                                 data-lng="-82.97118873517115" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2773-3251 / 8804-9163"
+                                 data-mail=""
+                                 data-instagram="panaderiaflor"
+                                 data-address="Frente a Tienda el Regalón, Calle del comercio, San Vito, Coto Brus"
+                                 data-img1="img/fts/pflor1.jpg"
+                                 data-img2="img/fts/pflor2.jpg"
+                                 data-description="Somos su parada obligatoria en San Vito. Queques, reposteria, Pan Artesanal y Delicioso Café. Todo para complacerlos a todos"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Panaderia Flor
+                                </li>
+                                <li
+                                 data-lat="8.825974" 
+                                 data-lng="-82.955352" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2773-0014 / 8934-4193 / 8722-5307  / 8874-5776"
+                                 data-mail=""
+                                 data-instagram="rancho.amigos.sanvito"
+                                 data-address="Al final del campo de aterrizaje San Vito, Coto Brus"
+                                 data-img1="img/fts/ramigos1.jpg"
+                                 data-img2="img/fts/ramigos2.jpg"
+                                 data-description="Les ofrecemos gran variedad en el menu, rodeado de naturaleza, hermosas zonas verdes y laguna, en los cuales puedes pasar un agradable dia en familia"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Restaurante Rancho Amigos
+                                </li>
+                                <li
+                                 data-lat="8.816532" 
+                                 data-lng="-82.969421" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2773-3096 / 8304-2392"
+                                 data-mail=""
+                                 data-instagram="mottola_panaderia_y_pizzeria"
+                                 data-address="Frente a oficinas del transito barrio el Sabanero, San Vito, Coto Brus"
+                                 data-img1="img/fts/mottola1.jpg"
+                                 data-img2="img/fts/mottola2.jpg"
+                                 data-description="Somos un grupo especializado en productos de panadería, pastelería, cafetería y restaurante"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Panadería y Pizzería Mottola
+                                </li>
+                                <li
+                                 data-lat="8.820569" 
+                                 data-lng="-82.990194" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2773-4244"
+                                 data-mail="laranchacr@gmail.com"
+                                 data-instagram="laranchacr"
+                                 data-address="800 m Sur de la iglesia la Luz del Mundo, Santa Rita, San Vito, Coto Brus"
+                                 data-img1="img/fts/rancha1.jpg"
+                                 data-img2="img/fts/rancha2.jpg"
+                                 data-description="Somos un restaurante de ambiente familiar con deliciosos platillos variados y un cálido servicio al cliente"
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Restaurante La Rancha
+                                </li>
+                                <li
+                                 data-lat="8.820122" 
+                                 data-lng="-82.971658" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2773-3080 / 8822-2545"
+                                 data-mail=""
+                                 data-instagram="pizzeria_liliana"
+                                 data-address="50 m Oeste del Parque de San Vito, Coto Brus"
+                                 data-img1="img/fts/liliana1.jpg"
+                                 data-img2="img/fts/liliana2.jpg"
+                                 data-img3="img/fts/liliana3.jpg"
+                                 data-description=""
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Pizzeria Liliana
+                                </li>
+                                <li
+                                 data-lat="8.820450" 
+                                 data-lng="-82.973165" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8336-6539"
+                                 data-mail=""
+                                 data-instagram="rolandiacr"
+                                 data-address="Costado de Super Mercado BM, San Vito, Coto Brus"
+                                 data-img1="img/fts/rolandia1.jpg"
+                                 data-img2="img/fts/rolandia2.jpg"
+                                 data-img3="img/fts/rolandia3.jpg"
+                                 data-description=""
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Rolandia
+                                </li>
+                                <li
+                                 data-lat="8.820254" 
+                                 data-lng="-82.974567" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2773-5343 / 8517-9641"
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-address="Contiguo a Grupo Materiales, San Vito, Coto Brus"
+                                 data-img1="img/fts/elbosque1.jpg"
+                                 data-img2="img/fts/elbosque2.jpg"
+                                 data-img3="img/fts/elbosque3.jpg"
+                                 data-description=""
+                                 >
+                                 <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Sport Bar El Bosque
+                                </li>
+                            </ul>
+                            <!-- Sabalito -->
+                            <li class="district-title collapsible">Sabalito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.888081" 
+                                 data-lng="-82.813112" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2201-6969 / 8759-9209"
+                                 data-mail=""
+                                 data-instagram="_losamigoss"
+                                 data-address="75 m oeste de la Delegacion Policial, La Lucha, Sabalito, Coto Brus"
+                                 data-img1="img/fts/losamigos1.jpg"
+                                 data-img2="img/fts/losamigos2.jpg"
+                                 data-description="Deliciosas comidas y bebidas, excelente ambiente familiar, terraza privada para eventos especiales"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Restaurante y Bar Los Amigos
+                                </li>
+                                <li
+                                 data-lat="8.829467" 
+                                 data-lng="-82.895542" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2204-0884 / 8718-9084"
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-address="2 km Noreste del MOPT, Sabalito, Coto Brus"
+                                 data-img1="img/fts/rchompi2.jpg"
+                                 data-img2="img/fts/rchompi1.jpg"
+                                 data-img3="img/fts/rchompi3.jpg"
+                                 data-description=""
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Rancho Chompi
+                                </li>
+                                <li
+                                 data-lat="8.823999028817132" 
+                                 data-lng="-82.9049988966042" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8952-2047"
+                                 data-mail="churraskeriajmarin@gmail.com"
+                                 data-instagram="churraskeria_jmarin"
+                                 data-address="800 m Este del MOPT, Sabalito, Coto Brus"
+                                 data-img1="img/fts/jmarin1.jpg"
+                                 data-img2="img/fts/jmarin2.jpg"
+                                 data-description=""
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Churrasqueria J Marin
+                                </li>
+                                <li
+                                 data-lat="8.823702" 
+                                 data-lng="-82.923442" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2784-0660 / 8984-7941"
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-address="1.5 km Oeste del Parque de Sabalito, Coto Brus"
+                                 data-img1="img/fts/conchito1.jpg"
+                                 data-img2="img/fts/conchito2.jpg"
+                                 data-description=""
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i> Restaurante Don Conchito
+                                </li>
+                                <li
+                                 data-lat="8.890272" 
+                                 data-lng="-82.805805" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8519-2119"
+                                 data-mail="hfallascafelachelita@gmail.com"
+                                 data-instagram="lachelitafarm"
+                                 data-address="1 km  Este del Colegio Jorge Volio, Mellizas, Sabalito, Coto Brus"
+                                 data-img1="img/fts/chelita1.jpg"
+                                 data-img2="img/fts/chelita2.jpg"
+                                 data-img3="img/fts/chelita3.jpg"
+                                 data-description=""
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i> La Chelita Coffee and Farm
+                                </li>
+                                <li
+                                 data-lat="8.823954" 
+                                 data-lng="-82.920813" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2201-6690 / 8392-5637"
+                                 data-mail="marcodenando59@gmail.com"
+                                 data-instagram="restaurantelacasaitaliana"
+                                 data-address="Barrio Mercedes, 800 m Oeste del Parque de Sabalito, Coto Brus"
+                                 data-img1="img/fts/citaliana1.jpg"
+                                 data-img2="img/fts/citaliana2.jpg"
+                                 data-description="De la capital, despues de 20 años vive en el hermoso San Vito. Servimos lo mas legitimo de la comida italiana"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i> Casa Italiana
+                                </li>
+                                <li
+                                 data-lat="8.824648" 
+                                 data-lng="-82.931007" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2773-3009 / 8567-7975"
+                                 data-mail="arielgmj26@gmail.com"
+                                 data-instagram=""
+                                 data-address="1 km Este de la Escuela de Lourdes, San Vito, Coto Brus"
+                                 data-img1="img/fts/chorifusion1.jpg"
+                                 data-img2="img/fts/chorifusion2.jpg"
+                                 data-description="La mejor comida fusión que se ofrece en Sabalito, Coto Brus. Nos enfocamos en un servicio personalizado"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i> El Chori Fusión
+                                </li>
+                                <li
+                                 data-lat="8.818637547062343" 
+                                 data-lng="-82.91017972449023" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8338-3924"
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-address="A un costado de la panaderia Rico Pan, Sabalito, Coto Brus"
+                                 data-img1="img/fts/mviriteca1.jpg"
+                                 data-img2="img/fts/mviriteca2.jpg"
+                                 data-description="Les ofrecemos artesanias y biblioteca"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i> Mercado Viriteca
+                                </li>
+                                <li
+                                 data-lat="8.809438" 
+                                 data-lng="-82.926630" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2784-0428 / 6269-3020"
+                                 data-mail="rancholatilapia@gmail.com"
+                                 data-instagram="latilapia"
+                                 data-address="2.5 km del cementerio Sabalito, Coto Brus"
+                                 data-img1="img/fts/tilapia1.jpg"
+                                 data-img2="img/fts/tilapia2.jpg"
+                                 data-description="Sumérgete en un entorno sereno y relajante en nuestro establecimiento"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i> Rancho La Tilapia
+                                </li>
+                            </ul>
+                            <!-- Limoncito -->
+                            <li class="district-title collapsible">Limoncito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                data-lat="8.844865" 
+                                data-lng="-83.030528" 
+                                data-slogan="¡Disfruta de la mejor comida local!"
+                                data-phone="8810-6090 / 6005-1412"
+                                data-mail=""
+                                data-instagram="fincaecologicadon"
+                                data-address="500 m Sur de la entrada de los Angeles, Limoncito, Coto Brus"
+                                data-img1="img/fts/donjuan1.jpg"
+                                data-img2="img/fts/donjuan2.jpg"
+                                data-description="Ofrecemos servicios de restaurante y senderos alrededor de nuestra finca, ademas de la elaboracion de uno de los mejores quesos de la zona"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Soda y Quesos Don Juan
+                                </li>
+                            </ul>
+                            <!-- Agua Buena -->
+                            <li class="district-title collapsible">Agua Buena</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                  data-lat="8.744275" 
+                                  data-lng="-82.943279" 
+                                  data-slogan="¡Disfruta de la mejor comida local!"
+                                  data-phone="8821-2081 / 8777-5363 / 8712-1857"
+                                  data-mail=""
+                                  data-instagram="marisqueria_mi_ranchito"
+                                  data-address="Frente a la entrada de Copa Buena, Agua Buena, Coto Brus"
+                                  data-img1="img/fts/miranchito1.jpg"
+                                  data-img2="img/fts/miranchito2.jpg"
+                                  data-description=""
+                                 >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Marisqueria Mi Ranchito
+                                </li>
+                                <li
+                                 data-lat="8.726248" 
+                                 data-lng="-82.934056" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2734-0168 / 8659-2105 / 8318-7815"
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-address="250 m Norte de la Escuela Campo Tres, Agua Buena, Coto Brus"
+                                 data-img1="img/fts/mcampotres1.jpg"
+                                 data-img2="img/fts/mcampotres2.jpg"
+                                 data-description=""
+                                 >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Marisqueria Campo Tres
+                                </li>
+                                <li
+                                 data-lat="8.744351" 
+                                 data-lng="-82.968102" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8769-4651"
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-address="50 m Oeste de la escuela Santo Domingo, Agua Buena, Coto Brus"
+                                 data-img1="img/fts/rceleste1.jpg"
+                                 data-img2="img/fts/rceleste2.jpg"
+                                 data-description="Centro turistico Rancho Celeste, este centro cuenta con piscina temperada, hidromasaje y restaurante"
+                                 >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Rancho Celeste
+                                </li>
+                                <li
+                                 data-lat="8.744647124768969" 
+                                 data-lng="-82.94761289536423" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="2734-0567 / 8354-2248"
+                                 data-mail=""
+                                 data-instagram="bocas.cr"
+                                 data-address="Frente a hotel Emanuel, Copa Buena, Agua Buena, Coto Brus"
+                                 data-img1="img/fts/bocas1.jpg"
+                                 data-img2="img/fts/bocas2.jpg"
+                                 data-description="Somos un  restaurante familiar donde servimos barbacoa texana y comida tradicional"
+                                 >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Restaurante and BBQ Bocas
+                                </li>
+                                <li
+                                 data-lat="8.721446" 
+                                 data-lng="-82.932527" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8819-8654 / 8826-6362"
+                                 data-mail=""
+                                 data-instagram="brsalchipapas"
+                                 data-address="100 m Norte de la Escuela Campo Tres, Agua Buena, Coto Brus"
+                                 data-img1="img/fts/salchipapas1.jpg"
+                                 data-img2="img/fts/salchipapas2.jpg"
+                                 data-description="Disfruta de nuestros exquisito platillos en un excelente ambiente para tu familia y amigos"
+                                 >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Soda Salchipapas
+                                </li>
+                            </ul>
+                            <!-- Pittier -->
+                            <li class="district-title collapsible">Pittier</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                data-lat="9.020062" 
+                                data-lng="-82.965186" 
+                                data-slogan="¡Disfruta de la mejor comida local!"
+                                data-phone="8804-8123"
+                                data-mail=""
+                                data-instagram=""
+                                data-address="Cerro Pittier, Santa María Cerro Pittier Parque Internacional La Amistad, Coto Brus"
+                                data-img1="img/fts/cerropittier1.jpg"
+                                data-img2="img/fts/cerropittier2.jpg"
+                                data-description="Botanik Glamping tiene como objetivo posicionarse como la principal experiencia gastronómica y de alojamiento de la región"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Hospedaje Cerro Pittier
+                                </li>
+                            </ul>
+                            <!-- Gutierrez Braun -->
+                            <li class="district-title collapsible">Gutierrez Braun</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                data-lat="8.909139" 
+                                data-lng="-82.906388" 
+                                data-slogan="¡Disfruta de la mejor comida local!"
+                                data-phone="8967-8090"
+                                data-mail="donefrafinca@gmail.com"
+                                data-instagram="fincadonefra"
+                                data-address="La Libertad, costado oeste de la escuela La Libertad, Gutierrez Braun, Coto Brus"
+                                data-img1="img/fts/don-efra1.jpg"
+                                data-img2="img/fts/don-efra2.jpg"
+                                data-description="Ofrecemos una alternativa turistica, donde se pueda disfrutar de la comodidad del hospedaje rustico, junto a una experiencia gastronomica inigualable"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Finca Don Efra
+                                </li>
+                                 <li
+                                data-lat="8.896674" 
+                                data-lng="-82.910729" 
+                                data-slogan="¡Disfruta de la mejor comida local!"
+                                data-phone="2784-8451"
+                                data-mail=""
+                                data-instagram=""
+                                data-address="100 m Norte de la entrada de la Libertad, La administracion, Gutierrez Braun, Coto Brus"
+                                data-img1="img/fts/fressia1.jpg"
+                                data-img2="img/fts/fressia2.jpg"
+                                data-description="Comidas llenas de sabor local"
+                                >
+                                <i class="fa fa-utensils" style="color:darkred; margin-right:8px;"></i>Soda Fressia
+                                </li>
+                            </ul>
+                        </ul>
+                        <p class="slogan">¡Sabores únicos que deleitan tu paladar!</p>
+                    </div>
+                </div>
+                <div class="sidebar-content">
+                    <!-- Hospedajes -->
+                    <button class="accordion">Hospedajes</button>
+                    <div class="panel" style="display:none;">
+                        <ul id="lodging-places">
+                            <!-- San Vito -->
+                            <li class="district-title collapsible">San Vito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.781803" 
+                                 data-lng="-82.957254" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="8400-3344"
+                                 data-mail=""
+                                 data-instagram="botanik_glamping"
+                                 data-address="650 m sur del Jardin Botánico Wilson, San Vito, Coto Brus"
+                                 data-img1="img/fts/botanik1.jpg"
+                                 data-img2="img/fts/botanik2.jpg"
+                                 data-description="Botanik Glamping tiene como objetivo posicionarse como la principal experiencia gastronomica y de alojamiento de la region"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Botanik Glamping
+                                </li>
+                                <li
+                                 data-lat="8.801423" 
+                                 data-lng="-82.968633" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="8633-9009"
+                                 data-mail="cantodelbosquecotobrus@gmail.com"
+                                 data-instagram="cantodelbosquecabanas"
+                                 data-address="2 km sur oeste del Hospital Juana Pirola, San Vito, Coto Brus"
+                                 data-img1="img/fts/canto4.jpg"
+                                 data-img2="img/fts/canto3.jpg"
+                                 data-img3="img/fts/canto5.jpg"
+                                 data-description="Hospedaje en las montañas de San Vito, Coto Brus, vive la belleza de la zona sur con nosotros. Paz, naturaleza y aventura"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Canto del Bosque
+                                </li>
+                                <li
+                                 data-lat="8.805826" 
+                                 data-lng="-82.960354" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="2773-4949 / 8749-4127"
+                                 data-mail="cabanas.bambu20@gmail.com"
+                                 data-instagram=""
+                                 data-address="400 m sureste de la escuela Linda Vista, San Vito, Coto Brus"
+                                 data-img1="img/fts/bambu1.jpg"
+                                 data-img2="img/fts/bambu2.jpg"
+                                 data-img3="img/fts/bambu3.jpg"
+                                 data-description="Cabañas Bambú, un lugar para descansar y disfrutar de la naturaleza"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Cabañas Bambú
+                                </li>
+                                <li
+                                 data-lat="8.789239" 
+                                 data-lng="-82.954771" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="2773-3208 / 8819-8155"
+                                 data-mail="info@cascatadelbosco.com"
+                                 data-instagram="cascata_del_bosco_sv"
+                                 data-address="200 m norte del Jardin Botanico Wilson, Las Cruces, Linda Vista, San Vito, Coto Brus"
+                                 data-img1="img/fts/cascata1.jpg"
+                                 data-img2="img/fts/cascata2.jpg"
+                                 data-description="Cascata del Bosco tiene una ubicacion ideal a poca distancia del mundialmente famoso Jardin Botanico Wilson y a 10 minutos del centro de San Vito"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Cascata del Bosco
+                                </li>
+                                <li
+                                 data-lat="8.849571" 
+                                 data-lng="-82.954234" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="2773-5618 / 8563-1085"
+                                 data-mail="recepcion@haciendadonpaolo.com"
+                                 data-instagram="hacienda_donpaolo"
+                                 data-address="1.5 km Este de la escuela Aguas Claras, San Vito, Coto Brus"
+                                 data-img1="img/fts/donpaolo1.jpg"
+                                 data-img2="img/fts/donpaolo2.jpg"
+                                 data-description="Situado en un entorno de extraordinario patrimonio natural. nuestro hotel ofrece un refugio para los sentidos, donde la diversidad de flora y fauna típica de Coto Brus cautiva la vista"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hacienda Don Paolo
+                                </li>
+                                <li
+                                 data-lat="8.848150" 
+                                 data-lng="-82.974412" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="2773-4420 / 8708-8309"
+                                 data-mail="kattmore@hotmail.com"
+                                 data-instagram="hotelcuencadeoro"
+                                 data-address="1.6 km Noroeste de la escuela El Ceibo, San Vito, Coto Brus"
+                                 data-img1="img/fts/cuencaoro1.jpg"
+                                 data-img2="img/fts/cuencaoro2.jpg"
+                                 data-description="Hotel Cuenca de Oro, un lugar para descansar y disfrutar de la naturaleza"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hotel Cuenca de Oro
+                                </li>
+                                <li
+                                 data-lat="8.820143" 
+                                 data-lng="-82.970023" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="2773-3025"
+                                 data-mail="hotelelceibo@gmail.com"
+                                 data-instagram="hotelelceibo"
+                                 data-address="100 m Este del parque de San Vito, Coto Brus"
+                                 data-img1="img/fts/elceibo1.jpg"
+                                 data-img2="img/fts/elceibo2.jpg"
+                                 data-img3="img/fts/elceibo3.jpg"
+                                 data-description="Amplio lugar y centrico, ideal para grupos grandes, familias y empresas. Habitaciones con agua caliente, TV por cable, wifi y parqueo"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hotel El Ceibo
+                                </li>
+                                <li
+                                 data-lat="8.852320" 
+                                 data-lng="-82.964816" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="2773-3228 / 6387-3433"
+                                 data-mail="info@greenhousecabanas.com"
+                                 data-instagram="greenhousecabañas"
+                                 data-address="250 m Noroeste de la escuela Agua Claras, San Vito, Coto Brus"
+                                 data-img1="img/fts/green1.jpg"
+                                 data-img2="img/fts/green2.jpg"
+                                 data-img3="img/fts/green3.jpg"
+                                 data-description="Green House, un lugar acogedor rodeado de naturaleza."
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Cabañas Green House
+                                </li>
+                            </ul>
+                            <!-- Sabalito -->
+                            <li class="district-title collapsible">Sabalito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.815761" 
+                                 data-lng="-82.917959" 
+                                 data-slogan="¡Velamos por tu comodidad y tranquilidad!"
+                                 data-phone="8899-4864"
+                                 data-mail="jemegochi@gmail.com"
+                                 data-instagram=""
+                                 data-address="Barrio San Jose, Sabalito, Coto Brus"
+                                 data-img1="img/fts/colibri1.jpg"
+                                 data-img2="img/fts/colibri2.jpg"
+                                 data-img3="img/fts/colibri3.jpg"
+                                 data-description="Visitanos, contamos con un ambiente natural y privado, tenemos senderos boscosos hacia el rio."
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hospedaje Colibrí
+                                </li>
+                                <li
+                                 data-lat="8.820062" 
+                                 data-lng="-82.915639" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="2784-0180 / 8328-7991"
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-address="50 m Oeste de la bomba Trova, Sabalito, Coto Brus"
+                                 data-img1="img/fts/talinda1.jpg"
+                                 data-img2="img/fts/talinda2.jpg"
+                                 data-img3="img/fts/talinda3.jpg"
+                                 data-description="Cabinas Ta'Linda... Su lugar especial de descanso!  Rodeados de un ambiente en armonía con la naturaleza para su placentero descanso"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Cabinas Ta'Linda
+                                </li>
+                                 <li
+                                 data-lat="8.819670" 
+                                 data-lng="-82.911588" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="8219-8977"
+                                 data-mail="rivierasanvito@hotmail.com"
+                                 data-instagram=""
+                                 data-address="Frente al banco de Costa Rica, Sabalito, Coto Brus"
+                                 data-img1="img/fts/riviera1.jpg"
+                                 data-img2="img/fts/riviera2.jpg"
+                                 data-img3="img/fts/riviera3.jpg"
+                                 data-description="En Hotel y Restaurante La Riviera le estamos esperando con gran comodidad en el centro de sabalito"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hotel La Riviera
+                                </li>
+                            </ul>
+                            <!-- Limoncito -->
+                            <li class="district-title collapsible">Limoncito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.781826" 
+                                 data-lng="-82.957138" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="8400-3344"
+                                 data-mail="lodging2@example.com"
+                                 data-instagram="lodging2"
+                                 data-address="650 m sur del Jardin Botánico Wilson, San Vito, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Botanik Glamping tiene como objetivo posicionarse como la principal experiencia gastronomica y de alojamiento de la region"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Botanik Glamping
+                                </li>
+                            </ul>
+                            <!-- Agua Buena -->
+                            <li class="district-title collapsible">Agua Buena</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.744957" 
+                                 data-lng="-82.947343" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="2734-0129 / 8410-6789"
+                                 data-mail="hotelemanuelaguabuena@gmail.com"
+                                 data-instagram="hotelemanuel_cr"
+                                 data-address="50 m Norte de la entrada del colegio de Copa Buena, Agua Buena, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Hotel Emanuel es un lugar de hospedaje familiar con trato personalizado y con esmero"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hotel Emanuel
+                                </li>
+                                 <li
+                                 data-lat="8.766713" 
+                                 data-lng="-82.938394" 
+                                 data-slogan="¡Gran experiencia de alojamiento de la region!"
+                                 data-phone="8706-4728 / 8622-8038"
+                                 data-mail="elsaborcitocotobruseno@gmail.com"
+                                 data-instagram="hotelcotobruseno"
+                                 data-address="1 km este de la iglesia San Francisco, Agua Buena, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Acogedoras cabinas rusticas, espaciosas, con balcon,tv, cable, agua caliente, parqueo, desayuno."
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hospedaje Cotobruseño
+                                </li>
+                            </ul>
+                            <!-- Pittier -->
+                            <li class="district-title collapsible">Pittier</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.820287" 
+                                 data-lng="-82.972368" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8804-8123 / 8814-9224"
+                                 data-mail=""
+                                 data-instagram="hospedajecerropittier"
+                                 data-address="300 m norte de la escuela Santa Maria, Pittier, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Hospedaje Cerro Pittier ofrece una experiencia única en un entorno natural, con acceso a senderos y vistas impresionantes."
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hospedaje Cerro Pittier
+                                </li>
+                            </ul>
+                            <!-- Gutierrez Braun -->
+                            <li class="district-title collapsible">Gutierrez Braun</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.909139" 
+                                 data-lng="-82.906388" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="8967-8090"
+                                 data-mail="donefrafinca@gmail.com"
+                                 data-instagram="fincadonefra"
+                                 data-address="La Libertad, costado oeste de la escuela La Libertad, Gutierrez Braun, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Ofrecemos una alternativa turistica, donde se pueda disfrutar de la comodidad del hospedaje rustico, junto a una experiencia gastronomica inigualable"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Finca Don Efra
+                                </li>
+                                <li
+                                 data-lat="8.897288" 
+                                 data-lng="-82.911553" 
+                                 data-slogan="¡Disfruta de la mejor comida local!"
+                                 data-phone="6034-4030"
+                                 data-mail="hotelcoffeeland.cr@gmail.com"
+                                 data-instagram=""
+                                 data-address="Contiguo a soda Fressia, La Administracion, Gutierrez Braun, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Brindamos un espacio comodo y confortable en Coto Brus"
+                                 >
+                                 <i class="fa fa-bed" style="color:darkblue; margin-right:8px;"></i>Hotel Cabañas Coffeeland
+                                </li>
+                            </ul>
+                        </ul>
+                        <p class="slogan">¡Descansa y disfruta de la tranquilidad de Coto Brus!</p>
+                    </div>
+                </div>
+                <div class="sidebar-content">
+                    <!-- Transportes -->
+                    <button class="accordion">Transportes</button>
+                    <div class="panel" style="display:none;">
+                        <ul id="transport-places">
+                            <li class="district-title collapsible">San Vito</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.819923" 
+                                 data-lng="-82.971211" 
+                                 data-slogan="¡Gran experiencia y servicio!"
+                                 data-phone="8764-2004 / 89902741"
+                                 data-mail="arpofacturas@gmail.com"
+                                 data-instagram=""
+                                 data-address="San Vito, Coto Brus"
+                                 data-img1="img/fts/arpo1.jpg"
+                                 data-img2="img/fts/arpo2.jpg"
+                                 data-description="Somo una empresa dirigida al servicio de transporte turistico a nivel nacional, nuestro deber es optimizar el servicio y expectativa de nuestros clientes"
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Transportes Arpo
+                                </li>
+                                <li
+                                 data-lat="8.836305" 
+                                 data-lng="-82.974625" 
+                                 data-slogan="¡Gran experiencia y servicio!"
+                                 data-phone="2773-3748"
+                                 data-mail="transportescepul@gmail.com"
+                                 data-instagram="autotransportescepulysomosa"
+                                 data-address="San Vito, Coto Brus"
+                                 data-img1="img/fts/somosa1.jpg"
+                                 data-img2="img/fts/somosa2.jpg"
+                                 data-description="Somos una empresa familiar, dedicada al transporte de personas, con una trayectoria de 15 años de experiencia, brindamos servicios de transporte privado y especiales, tanto en la zona Sur como el resto del Territorio Nacional."
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Transportes Somosa
+                                </li>
+                            </ul>
+                        </ul>
+                        <p class="slogan">¡Viaja seguro y disfruta de las bellezas de Coto Brus!</p>
+                    </div>
+                </div>
+                <div class="sidebar-content">
+                    <!-- Tours -->
+                    <button class="accordion">Tour</button>
+                    <div class="panel" style="display:none;">
+                        <ul id="tour-places">
+                            <li class="district-title collapsible">Tour</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.837760" 
+                                 data-lng="-83.072852" 
+                                 data-slogan="¡Gran experiencia y conocimiento cultural!"
+                                 data-phone="8520-7314 / 8584-2941 / 8560-7499"
+                                 data-mail="bpgis55@gmail.com"
+                                 data-instagram=""
+                                 data-address="La Casona, Limoncito, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Durante la visita a la casa tradicional Ju Mölöchi ofrecemos la oportunidad de: Compartir y vivenciar tradiciones y costumbres, revalorar y preservar elementos culturales, se proporciona un desarrollo integral comunitario consciente, responsable y solidario"
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Territorio Indigena La Casona
+                                </li>
+                                <li
+                                 data-lat="9.023353" 
+                                 data-lng="-82.959183" 
+                                 data-slogan="¡Gran experiencia y conocimiento cultural!"
+                                 data-phone="2200-5355 / 2200-5675"
+                                 data-mail="reservaciones.pila@sinac.go.cr"
+                                 data-instagram=""
+                                 data-duration="Desde San Vito, Coto Brus: 1 hora y 20 minutos y el tour puede durar aproximadamente 1 hora y 30 minutos"
+                                 data-address="Santa Maria, Pittier, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Visita al parque internacional declarado Patrimonio de la Humanidad y sitio RAMSAR. Sitio inigualable para avistamiento de aves y senderismo, Hogar de mas de 300 plantas mas de 600 especies de aves"
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Parque internacional La Amistad 
+                                </li>
+                                <li
+                                 data-lat="8.827498" 
+                                 data-lng="-83.016989" 
+                                 data-slogan="¡Gran experiencia y conocimiento cultural!"
+                                 data-phone=""
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-duration="10 minutos de traslado y el tour puede durar aproximadamente 3 horas"
+                                 data-address="San Juan, Limoncito, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="En este lugar se puede observar fósiles de animales gigantes que caminaron por nuestra tierra hace mas de 5 millones de años"
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Megafauna 
+                                </li>
+                                <li
+                                 data-lat="8.946091" 
+                                 data-lng="-82.741908" 
+                                 data-slogan="¡Gran experiencia y conocimiento cultural!"
+                                 data-phone=""
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-duration="Desde San Vito, Coto Brus, 50 minutos."
+                                 data-address="Sabalito, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="La reserva es un tesoro natural ubicado en el canton de Coto Brus, en la provincia de Puntarenas. Esta reserva abarca 5075 hectáreas y forma parte del Sistema Nacional de Areas de conservacion(SINAC), especificamente del área de conservacion La Amistad Pacífico."
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Zona Protectora Las Tablas
+                                </li>
+                                <li
+                                 data-lat="8.810643" 
+                                 data-lng="-82.927029" 
+                                 data-slogan="¡Gran experiencia y conocimiento cultural!"
+                                 data-phone="8832-6383"
+                                 data-mail=""
+                                 data-instagram="avivaorganiccr"
+                                 data-duration="De 9 am a 12 md"
+                                 data-address="Sabalito, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Tiempo único donde tendras contacto directo con la naturaleza en un ambiente organico; enfocado en la restauracion del entorno natural"
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Aviva Organic / Aviva Gourmet
+                                </li>
+                                <li
+                                 data-lat="8.891578" 
+                                 data-lng="-82.760464" 
+                                 data-slogan="¡Gran experiencia y conocimiento cultural!"
+                                 data-phone="8729-7461"
+                                 data-mail=""
+                                 data-instagram="_fincapalohueco"
+                                 data-duration="Desde San Vito, Coto Brus a la finca: 40 minutos, el tour puede durar aproximadamente 2 horas"
+                                 data-address="La Mellizas, Sabalito, Coto Brus"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Ubicada en el rincon magico de Costa Rica, La finca Palo Hueco te invita a explorar sus impresionantes senderos rodeados de higuerones y paisajes únicos"
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Finca Palo Hueco
+                                </li>
+                                <li
+                                 data-lat="8.784949" 
+                                 data-lng="-82.959409" 
+                                 data-slogan="¡Gran experiencia y conocimiento cultural!"
+                                 data-phone="2511-4900"
+                                 data-mail=""
+                                 data-instagram=""
+                                 data-duration=""
+                                 data-address="5 km al sur de San Vito, carretera hacia Ciudad Neily"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Es un jardin botanico que se encuentra en la Estacion Biologica Las Cruces, que forma parte de la Reserva de la Biosfera La Amistad, que comprende 475 000 hectareas de reservas y zona de bosque tropical preservado."
+                                 >
+                                 <i class="fa fa-bus" style="color:brown; margin-right:8px;"></i>Estacion Biologica Las Cruces y Jardin Botanico Wilson
+                                </li>
+                            </ul>
+                            <li class="district-title collapsible">Tour Operador</li>
+                            <ul class="district-list" style="display:none;">
+                                <li
+                                 data-lat="8.819950" 
+                                 data-lng="-82.971055" 
+                                 data-slogan="¡Te llevamos a conocer lo mejor de Coto Brus!"
+                                 data-phone="8985-7939"
+                                 data-mail="descubriendocotobrus@gmail.com"
+                                 data-instagram=""
+                                 data-address="Coto Brus, Puntarenas, Costa Rica"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Coto Brus es un paraiso natural de Costa Rica, queremos mostrarte todos sus atractivos y la belleza de su gente. Definitivamente es un lugar que debes visitar."
+                                 >
+                                 <i class="fa fa-explore" style="color:brown; margin-right:8px;"></i>Descubriendo Coto Brus
+                                </li>
+                                <li
+                                 data-lat="8.819950" 
+                                 data-lng="-82.971055" 
+                                 data-slogan="¡Te llevamos a conocer lo mejor de Coto Brus!"
+                                 data-phone="8316-6408"
+                                 data-mail="surtripscr@gmail.com"
+                                 data-instagram="surtrips"
+                                 data-address="Coto Brus, Puntarenas, Costa Rica"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Somos una empresa certificada por el ICT, que promueve el desarrollo turistico principalmente en la Zona de Coto Brus y el sur de Costa Rica. Coto Brus cuenta con una exuberante biodiversidad natural y la riqueza cultural que permite ofrecer actividades turisticas de alta calidad."
+                                 >
+                                 <i class="fa fa-explore" style="color:brown; margin-right:8px;"></i>Surtrips Costa Rica
+                                </li>
+                                <li
+                                 data-lat="8.819950" 
+                                 data-lng="-82.971055" 
+                                 data-slogan="¡Te llevamos a conocer lo mejor de Coto Brus!"
+                                 data-phone="2438-5299 / 8316-6408"
+                                 data-mail="desafiostour@gmail.com"
+                                 data-instagram="desafiostour_cr"
+                                 data-address="Coto Brus, Puntarenas, Costa Rica"
+                                 data-img1="img/fts/El-ceibo.jpg"
+                                 data-img2="img/fts/El-ceibo2.jpg"
+                                 data-description="Ofrecemos dintintos tours como lo son: Tour de Quetzales, Tour parque internacional la Amistad, Pittier, Tour de café, Tour de cavernas, Tour cultural Territorio Indigena Coto Brus, Boruca, City Tour (Historia de la creacion de Coto Brus y sus origenes Italianos)"
+                                 >
+                                 <i class="fa fa-" style="color:brown; margin-right:8px;"></i>Desafios Tour
+                                </li>
+                            </ul>
+                        </ul>
+                        <p class="slogan">¡Viaja seguro y disfruta de la naturaleza!</p>
+                    </div>
+                </div>
+            </div>
+            <div class="leaflet-sidebar-pane" id="settings">
+                <h1 class="leaflet-sidebar-header">
+                    Configuración
+                    <span class="leaflet-sidebar-close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+                <div class="sidebar-content">
+                    <h3>Opciones del mapa</h3>
+                    <div>
+                        <input type="checkbox" id="showDistricts">Mostrar Distritos
+                    </div>
+                    <div>
+                        <input type="checkbox" id="showTransport">Mostrar Transporte
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="map"></div>
+    <!-- Incluye tus scripts JS aquí -->
+    <script src="lib/leaflet-1.9.4/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-sidebar-v2/js/leaflet-sidebar.min.js"></script>
+    <script src="js/script.js"></script>
+    
+    <!-- Colapsables y paneles -->
+    <script>
+        document.querySelectorAll('.accordion').forEach(function(btn) {
+            var panel = btn.nextElementSibling;
+            var hideTimeout;
+            panel.style.display = "none";
+            function showPanel() {
+                clearTimeout(hideTimeout);
+                panel.style.display = "block";
+                btn.classList.add('active');
+            }
+            function hidePanel() {
+                hideTimeout = setTimeout(function() {
+                    panel.style.display = "none";
+                    btn.classList.remove('active');
+                }, 100);
+            }
+            btn.addEventListener('mouseenter', showPanel);
+            btn.addEventListener('mouseleave', hidePanel);
+            panel.addEventListener('mouseenter', showPanel);
+            panel.addEventListener('mouseleave', hidePanel);
+        });
+        document.querySelectorAll('.district-title.collapsible').forEach(function(title) {
+            title.addEventListener('click', function(e) {
+                document.querySelectorAll('.district-list').forEach(function(list) {
+                    list.style.display = 'none';
+                });
+                var nextList = title.nextElementSibling;
+                if (nextList && nextList.classList.contains('district-list')) {
+                    nextList.style.display = 'block';
+                }
+                e.stopPropagation();
+            });
+        });
+        document.addEventListener('click', function(e) {
+            if (!e.target.classList.contains('district-title') && !e.target.classList.contains('district-list')) {
+                document.querySelectorAll('.district-list').forEach(function(list) {
+                    list.style.display = 'none';
+                });
+            }
+        });
+    </script>
+    
+</body>
+</html>
