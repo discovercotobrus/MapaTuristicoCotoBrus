@@ -70,8 +70,8 @@ document.getElementById("zoomToPittier").addEventListener("click", function(e){
 
 var allMarkers = [];
 
-// Estado del botón para alternar marcadores
-var markersVisible = false;
+// Estado del botón para alternar marcadores (empezamos con marcadores visibles)
+var markersVisible = true;
 
 // Función para obtener todos los lugares de todas las categorías
 function getAllPlaces() {
@@ -43610,4 +43610,27 @@ map.on('zoomend', function() {
     map.closePopup();
   }
 });
+
+// Mostrar todos los marcadores automáticamente al cargar el mapa
+document.addEventListener('DOMContentLoaded', function() {
+  // Esperar un poco para asegurar que todos los elementos estén listos
+  setTimeout(function() {
+    showAllMarkers();
+  }, 500);
+});
+
+// Si el DOM ya está cargado, ejecutar inmediatamente
+if (document.readyState === 'loading') {
+  // El DOM aún se está cargando, esperar al evento
+  document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+      showAllMarkers();
+    }, 500);
+  });
+} else {
+  // El DOM ya está cargado, ejecutar inmediatamente
+  setTimeout(function() {
+    showAllMarkers();
+  }, 500);
+}
 
