@@ -322,6 +322,43 @@ document.getElementById("toggleAllMarkers").addEventListener("click", function(e
   } else {
     showAllMarkers();
   }
+  sidebar.close(); // Cerrar sidebar después de toggle
+});
+
+// Event listener global para cerrar sidebar al hacer clic en elementos interactivos
+document.addEventListener('DOMContentLoaded', function() {
+  // Obtener el elemento sidebar
+  var sidebarElement = document.getElementById('sidebar');
+  
+  if (sidebarElement) {
+    // Agregar event listener para todos los clics dentro del sidebar
+    sidebarElement.addEventListener('click', function(e) {
+      var target = e.target;
+      var shouldClose = false;
+      
+      // Lista de elementos que deben cerrar el sidebar al hacer clic
+      var closeOnClickSelectors = [
+        'li[data-lat][data-lng]', // Elementos de lugares con coordenadas
+        '.district-title.collapsible', // Títulos de distrito
+        'button.btn', // Botones
+        'button.accordion' // Botones accordion
+      ];
+      
+      // Verificar si el elemento clickeado o algún padre coincide con los selectores
+      closeOnClickSelectors.forEach(function(selector) {
+        if (target.matches(selector) || target.closest(selector)) {
+          shouldClose = true;
+        }
+      });
+      
+      // Cerrar sidebar si es necesario, con un pequeño delay para permitir que la acción se complete
+      if (shouldClose) {
+        setTimeout(function() {
+          sidebar.close();
+        }, 100);
+      }
+    });
+  }
 });
 
 // Iconos personalizados para los marcadores
@@ -378,32 +415,62 @@ function showTempMarker(lat, lng, icon, popupContent){
   });
 }
 map.on('popupopen', function(e) {
-  // Busca todos los carruseles en el popup abierto
-  var popupDivs = e.popup._contentNode.querySelectorAll('div[id^="carousel-"]');
-  popupDivs.forEach(function(div) {
-    window[div.id + '_idx'] = 0;
-    // Oculta todas las imágenes menos la primera
-    var imgs = div.querySelectorAll('.carousel-img');
-    imgs.forEach(function(img, i) {
-      img.style.display = (i === 0) ? 'block' : 'none';
-    });
-  });
+  // Los carruseles ahora se inicializan solo cuando se muestran por primera vez
+  // mediante la función toggleImageCarousel
 });
 
-// Función para crear carrusel de imágenes en el popup
+// Función para crear carrusel de imágenes en el popup (inicialmente oculto)
 function createImageCarousel(images, name, carouselId) {
   if (!images.length) return '';
+  
   let imgsHtml = images.map((src, i) =>
     `<img src="${src}" alt="${name}" style="width:100%;max-width:220px;${i===0?'display:block;':'display:none;'}border-radius:8px;display:block;margin:0 auto;" class="carousel-img">`
   ).join('');
-  // No inicialices el índice aquí
+  
   return `
-    <div id="${carouselId}" style="position:relative;text-align:center;">
-      ${imgsHtml}
-      <button style="position:absolute;top:50%;left:0;transform:translateY(-50%);background:#fff;border:none;font-size:1.5em;cursor:pointer;" onclick="window.carouselPrev('${carouselId}')">&#9664;</button>
-      <button style="position:absolute;top:50%;right:0;transform:translateY(-50%);background:#fff;border:none;font-size:1.5em;cursor:pointer;" onclick="window.carouselNext('${carouselId}')">&#9654;</button>
+    <div style="margin-top: 8px;">
+      <button id="toggle-${carouselId}" onclick="window.toggleImageCarousel('${carouselId}')" 
+              style="background: linear-gradient(90deg, #4CAF50, #66BB6A); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 12px; font-weight: 600; margin-bottom: 8px; transition: all 0.3s;">
+        📸 Ver Imágenes (${images.length})
+      </button>
+      <div id="${carouselId}" style="position:relative;text-align:center;display:none;margin-top:8px;">
+        ${imgsHtml}
+        <button style="position:absolute;top:50%;left:0;transform:translateY(-50%);background:rgba(255,255,255,0.9);border:none;font-size:1.5em;cursor:pointer;border-radius:50%;width:40px;height:40px;box-shadow:0 2px 4px rgba(0,0,0,0.3);" onclick="window.carouselPrev('${carouselId}')">&#9664;</button>
+        <button style="position:absolute;top:50%;right:0;transform:translateY(-50%);background:rgba(255,255,255,0.9);border:none;font-size:1.5em;cursor:pointer;border-radius:50%;width:40px;height:40px;box-shadow:0 2px 4px rgba(0,0,0,0.3);" onclick="window.carouselNext('${carouselId}')">&#9654;</button>
+      </div>
     </div>
   `;
+}
+
+// Función para mostrar/ocultar el carrusel de imágenes
+window.toggleImageCarousel = function(carouselId) {
+  var carousel = document.getElementById(carouselId);
+  var button = document.getElementById('toggle-' + carouselId);
+  
+  if (carousel && button) {
+    var isHidden = carousel.style.display === 'none';
+    
+    if (isHidden) {
+      // Mostrar carrusel
+      carousel.style.display = 'block';
+      button.innerHTML = '🖼️ Ocultar Imágenes';
+      button.style.background = 'linear-gradient(90deg, #f44336, #ef5350)';
+      
+      // Inicializar el carrusel si no está inicializado
+      if (window[carouselId + '_idx'] === undefined) {
+        window[carouselId + '_idx'] = 0;
+        var imgs = carousel.querySelectorAll('.carousel-img');
+        imgs.forEach(function(img, i) {
+          img.style.display = (i === 0) ? 'block' : 'none';
+        });
+      }
+    } else {
+      // Ocultar carrusel
+      carousel.style.display = 'none';
+      button.innerHTML = '📸 Ver Imágenes (' + carousel.querySelectorAll('.carousel-img').length + ')';
+      button.style.background = 'linear-gradient(90deg, #4CAF50, #66BB6A)';
+    }
+  }
 }
 
 window.carouselPrev = function(id){
@@ -458,6 +525,7 @@ document.querySelectorAll("#tourist-places .district-list li").forEach(function(
   item.addEventListener("click", function(){
     map.setView([lat, lng], 16);
     showTempMarker(lat, lng, turismoIcon, popupContent);
+    sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
   }
 });
@@ -493,6 +561,7 @@ document.querySelectorAll("#restaurant-places .district-list li").forEach(functi
   item.addEventListener("click", function(){
     map.setView([lat, lng], 16);
     showTempMarker(lat, lng, restauranteIcon, popupContent);
+    sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
   }
 });
@@ -528,6 +597,7 @@ document.querySelectorAll("#lodging-places .district-list li").forEach(function(
   item.addEventListener("click", function(){
     map.setView([lat, lng], 16);
     showTempMarker(lat, lng, hospedajeIcon, popupContent);
+    sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
   }
 });
@@ -564,6 +634,7 @@ document.querySelectorAll("#transport-places .district-list li").forEach(functio
   item.addEventListener("click", function(){
     map.setView([lat, lng], 16);
     showTempMarker(lat, lng, transporteIcon, popupContent);
+    sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
   }
 });
@@ -601,6 +672,7 @@ document.querySelectorAll("#tour-places .district-list li").forEach(function(ite
   item.addEventListener("click", function(){
     map.setView([lat, lng], 16);
     showTempMarker(lat, lng, tourIcon, popupContent);
+    sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
   }
 });

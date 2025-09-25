@@ -412,3 +412,47 @@ body {
 .tour-cluster div {
   background-color: #9C27B0 !important; /* Morado para tours */
 }
+
+/* Estilos para botones de imágenes en popups */
+button[id^="toggle-"] {
+  transition: all 0.3s ease !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2) !important;
+  display: block !important;
+  width: 100% !important;
+  text-align: center !important;
+}
+
+button[id^="toggle-"]:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.3) !important;
+}
+
+button[id^="toggle-"]:active {
+  transform: translateY(0) !important;
+}
+
+/* Estilos para carruseles de imágenes en popups */
+div[id^="carousel-"] {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #f9f9f9;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+div[id^="carousel-"] img {
+  border-radius: 0 !important;
+}
+
+/* Mejorar botones de navegación del carrusel */
+div[id^="carousel-"] button {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+div[id^="carousel-"] button:hover {
+  background: rgba(255,255,255,1) !important;
+  transform: scale(1.1) !important;
+}
