@@ -239,9 +239,15 @@ function showAllMarkers() {
     var placeName = place.element.textContent.trim();
     var tooltipClass = 'tooltip-' + place.category.toLowerCase();
     
-    // Crear marcador con tooltip permanente
+    // Crear marcador con tooltip permanente y popup persistente
     var marker = L.marker([lat, lng], {icon: place.icon})
-      .bindPopup(popupContent)
+      .bindPopup(popupContent, {
+        closeOnEscapeKey: false,    // No cerrar con ESC
+        autoClose: false,           // No cerrar automáticamente al abrir otro popup
+        closeOnClick: false,        // No cerrar al hacer clic en el mapa
+        maxWidth: 300,              // Ancho máximo del popup
+        minWidth: 250               // Ancho mínimo del popup
+      })
       .bindTooltip(placeName, {
         permanent: true,
         direction: 'top',
@@ -399,16 +405,24 @@ var hospedajeLayer = L.layerGroup().addTo(map);
 var transporteLayer = L.layerGroup().addTo(map);
 var tourLayer = L.layerGroup().addTo(map);
 
-// Marcador temporal y cierre de popup al hacer click en el mapa
+// Marcador temporal y configuración de popup persistente
 var currentMarker = null;
 function showTempMarker(lat, lng, icon, popupContent){
   if(currentMarker){
     map.removeLayer(currentMarker);
     currentMarker = null;
   }
-  var marker = L.marker([lat, lng], {icon: icon}).addTo(map).bindPopup(popupContent);
+  var marker = L.marker([lat, lng], {icon: icon}).addTo(map).bindPopup(popupContent, {
+    closeOnEscapeKey: false,    // No cerrar con ESC (opcional)
+    autoClose: false,           // No cerrar automáticamente al abrir otro popup
+    closeOnClick: false,        // No cerrar al hacer clic en el mapa
+    maxWidth: 300,              // Ancho máximo del popup
+    minWidth: 250               // Ancho mínimo del popup
+  });
   marker.openPopup();
   currentMarker = marker;
+  
+  // Solo remover el marcador cuando el usuario cierre explícitamente el popup
   marker.on("popupclose", function() {
     map.removeLayer(marker);
     currentMarker = null;
@@ -424,7 +438,7 @@ function createImageCarousel(images, name, carouselId) {
   if (!images.length) return '';
   
   let imgsHtml = images.map((src, i) =>
-    `<img src="${src}" alt="${name}" style="width:100%;max-width:220px;${i===0?'display:block;':'display:none;'}border-radius:8px;display:block;margin:0 auto;" class="carousel-img">`
+    `<img src="${src}" alt="${name}" style="width:100%;max-width:220px;${i===0?'display:block;':'display:none;'}border-radius:8px;margin:0 auto;" class="carousel-img">`
   ).join('');
   
   return `
@@ -456,14 +470,13 @@ window.toggleImageCarousel = function(carouselId) {
       button.innerHTML = '🖼️ Ocultar Imágenes';
       button.style.background = 'linear-gradient(90deg, #f44336, #ef5350)';
       
-      // Inicializar el carrusel si no está inicializado
-      if (window[carouselId + '_idx'] === undefined) {
-        window[carouselId + '_idx'] = 0;
-        var imgs = carousel.querySelectorAll('.carousel-img');
-        imgs.forEach(function(img, i) {
-          img.style.display = (i === 0) ? 'block' : 'none';
-        });
-      }
+      // Siempre reinicializar el carrusel para asegurar que funcione correctamente
+      window[carouselId + '_idx'] = 0;
+      var imgs = carousel.querySelectorAll('.carousel-img');
+      imgs.forEach(function(img, i) {
+        img.style.display = (i === 0) ? 'block' : 'none';
+      });
+      
     } else {
       // Ocultar carrusel
       carousel.style.display = 'none';
@@ -523,7 +536,6 @@ document.querySelectorAll("#tourist-places .district-list li").forEach(function(
   imagesHtml +
   (item.getAttribute("data-description") ? "<br><br>" + item.getAttribute("data-description") : "");
   item.addEventListener("click", function(){
-    map.setView([lat, lng], 16);
     showTempMarker(lat, lng, turismoIcon, popupContent);
     sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
@@ -559,7 +571,6 @@ document.querySelectorAll("#restaurant-places .district-list li").forEach(functi
   imagesHtml +
   (item.getAttribute("data-description") ? "<br><br>" + item.getAttribute("data-description") : "");
   item.addEventListener("click", function(){
-    map.setView([lat, lng], 16);
     showTempMarker(lat, lng, restauranteIcon, popupContent);
     sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
@@ -595,7 +606,6 @@ document.querySelectorAll("#lodging-places .district-list li").forEach(function(
   imagesHtml +
   (item.getAttribute("data-description") ? "<br><br>" + item.getAttribute("data-description") : "");
   item.addEventListener("click", function(){
-    map.setView([lat, lng], 16);
     showTempMarker(lat, lng, hospedajeIcon, popupContent);
     sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
@@ -632,7 +642,6 @@ document.querySelectorAll("#transport-places .district-list li").forEach(functio
   imagesHtml +
   (item.getAttribute("data-description") ? "<br><br>" + item.getAttribute("data-description") : "");
   item.addEventListener("click", function(){
-    map.setView([lat, lng], 16);
     showTempMarker(lat, lng, transporteIcon, popupContent);
     sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
@@ -670,7 +679,6 @@ document.querySelectorAll("#tour-places .district-list li").forEach(function(ite
   imagesHtml +
   (item.getAttribute("data-description") ? "<br><br>" + item.getAttribute("data-description") : "");
   item.addEventListener("click", function(){
-    map.setView([lat, lng], 16);
     showTempMarker(lat, lng, tourIcon, popupContent);
     sidebar.close(); // Cerrar sidebar después de seleccionar lugar
   });
@@ -43781,6 +43789,8 @@ document.getElementById('showDistricts').addEventListener('change', function(e) 
 
 map.on('zoomend', function() {
   var zoom = map.getZoom();
+  
+  // Controlar estilos de popup según zoom
   document.querySelectorAll('.leaflet-popup').forEach(function(popup) {
     if (zoom >= 13) {
       popup.classList.add('small-popup');
@@ -43788,13 +43798,6 @@ map.on('zoomend', function() {
       popup.classList.remove('small-popup');
     }
   });
-});
-
-map.on('zoomend', function() {
-  var zoom = map.getZoom();
-  if (zoom <= 13 && map._popup) {
-    map.closePopup();
-  }
   
   // Controlar visibilidad de tooltips según zoom
   var tooltips = document.querySelectorAll('.leaflet-tooltip');
