@@ -246,8 +246,7 @@ body {
   }
 }
 
-/* ...existing code... */
-
+/* Estilo para popups pequeños */
 .leaflet-popup.small-popup .leaflet-popup-content {
   font-size: 0.85em;
   max-width: 180px;
@@ -327,6 +326,87 @@ body {
 
 .transporte-cluster div {
   background-color: brown !important; /* Marrón para transporte */
+}
+
+.tour-cluster div {
+  background-color: purple !important; /* Morado para tours */
+}
+
+/* Estilos para tooltips de marcadores */
+.marker-tooltip {
+  background: rgba(255, 255, 255, 0.95);
+  color: #333;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  font-family: 'Roboto', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 10px;
+  white-space: nowrap;
+  max-width: 200px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.marker-tooltip::before {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid rgba(255, 255, 255, 0.95);
+}
+
+/* Tooltips por categoría con colores temáticos */
+.tooltip-turismo {
+  background: linear-gradient(135deg, #4CAF50, #66BB6A);
+  color: white;
+}
+
+.tooltip-turismo::before {
+  border-top-color: #4CAF50;
+}
+
+.tooltip-restaurante {
+  background: linear-gradient(135deg, darkred, #E57373);
+  color: white;
+}
+
+.tooltip-restaurante::before {
+  border-top-color: darkred;
+}
+
+.tooltip-hospedaje {
+  background: linear-gradient(135deg, darkblue, #64B5F6);
+  color: white;
+}
+
+.tooltip-hospedaje::before {
+  border-top-color: darkblue;
+}
+
+.tooltip-transporte {
+  background: linear-gradient(135deg, brown, #FFB74D);
+  color: white;
+}
+
+.tooltip-transporte::before {
+  border-top-color: brown;
+}
+
+.tooltip-tour {
+  background: linear-gradient(135deg, purple, #BA68C8);
+  color: white;
+}
+
+.tooltip-tour::before {
+  border-top-color: purple;
 }
 
 .tour-cluster div {

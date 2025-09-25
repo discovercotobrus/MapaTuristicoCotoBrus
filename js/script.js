@@ -236,7 +236,19 @@ function showAllMarkers() {
     }
     
     var popupContent = createPopupContent(place.element, categoryIcon);
-    var marker = L.marker([lat, lng], {icon: place.icon}).bindPopup(popupContent);
+    var placeName = place.element.textContent.trim();
+    var tooltipClass = 'tooltip-' + place.category.toLowerCase();
+    
+    // Crear marcador con tooltip permanente
+    var marker = L.marker([lat, lng], {icon: place.icon})
+      .bindPopup(popupContent)
+      .bindTooltip(placeName, {
+        permanent: true,
+        direction: 'top',
+        offset: [0, -10],
+        className: 'marker-tooltip ' + tooltipClass,
+        opacity: 0.9
+      });
     
     // Agregar marcador al cluster correspondiente
     switch(place.category) {
@@ -272,6 +284,17 @@ function showAllMarkers() {
     var group = new L.featureGroup(allMarkers);
     map.fitBounds(group.getBounds().pad(0.1));
   }
+  
+  // Asegurar que los tooltips sean visibles después del zoom
+  setTimeout(function() {
+    var zoom = map.getZoom();
+    var tooltips = document.querySelectorAll('.leaflet-tooltip');
+    tooltips.forEach(function(tooltip) {
+      if (zoom >= 12) {
+        tooltip.style.display = 'block';
+      }
+    });
+  }, 300);
   
   markersVisible = true;
   document.getElementById("toggleAllMarkers").innerHTML = "🗺️ Ocultar Marcadores";
@@ -43700,6 +43723,16 @@ map.on('zoomend', function() {
   if (zoom <= 13 && map._popup) {
     map.closePopup();
   }
+  
+  // Controlar visibilidad de tooltips según zoom
+  var tooltips = document.querySelectorAll('.leaflet-tooltip');
+  tooltips.forEach(function(tooltip) {
+    if (zoom < 12) {
+      tooltip.style.display = 'none';
+    } else {
+      tooltip.style.display = 'block';
+    }
+  });
 });
 
 // Mostrar todos los marcadores automáticamente al cargar el mapa
